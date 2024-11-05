@@ -1,10 +1,9 @@
 [
   {
-    "id": "1",
     "username": "Ganesh",
     "email": "ganesh@cxx.in",
     "mobile": "123456791",
-    "photo": "ganesh_profile.jpeg",
+    "photo": "ganesh_profile.png",
     "role": "SoftwareEngineer",
     "skills": [
       "Html",
@@ -19,11 +18,10 @@
     }
   },
   {
-    "id": "1",
     "username": "Prakash",
     "email": "prakash@cxx.in",
     "mobile": "123456791",
-    "photo": "prakash_profile.jpeg",
+    "photo": "ganesh_profile.png",
     "role": "SoftwareEngineer",
     "skills": [
       "Html",
@@ -41,7 +39,7 @@
     "username": "Harish",
     "email": "harish@cxx.in",
     "mobile": "123456791",
-    "photo": "harish_profile.jpeg",
+    "photo": "ganesh_profile.png",
     "role": "SoftwareEngineer",
     "skills": [
       "Html",
@@ -59,7 +57,7 @@
     "username": "Sathish",
     "email": "sathish@cxx.in",
     "mobile": "123456791",
-    "photo": "sathish_profile.jpeg",
+    "photo": "ganesh_profile.png",
     "role": "SoftwareEngineer",
     "skills": [
       "Html",
@@ -77,7 +75,7 @@
     "username": "Ranjith",
     "email": "ranjith@cxx.in",
     "mobile": "123456791",
-    "photo": "ranjith_profile.jpeg",
+    "photo": "ganesh_profile.png",
     "role": "SoftwareEngineer",
     "skills": [
       "Html",
@@ -95,7 +93,7 @@
     "username": "DineshBabu",
     "email": "dineshbabu@cxx.in",
     "mobile": "123456791",
-    "photo": "dinesh_profile.jpeg",
+    "photo": "ganesh_profile.png",
     "role": "SoftwareEngineer",
     "skills": [
       "Html",
@@ -113,7 +111,7 @@
     "username": "Parthiban",
     "email": "parthiban@cxx.in",
     "mobile": "123456791",
-    "photo": "parthiban_profile.jpeg",
+    "photo": "ganesh_profile.png",
     "role": "SoftwareEngineer",
     "skills": [
       "Html",
@@ -131,7 +129,7 @@
     "username": "Lokesh",
     "email": "lokesh@cxx.in",
     "mobile": "123456791",
-    "photo": "lokesh_profile.jpeg",
+    "photo": "ganesh_profile.png",
     "role": "SoftwareEngineer",
     "skills": [
       "Html",
@@ -149,7 +147,7 @@
     "username": "Karunamurthy",
     "email": "karunamurthy@cxx.in",
     "mobile": "123456791",
-    "photo": "karunamurthy_profile.jpeg",
+    "photo": "ganesh_profile.png",
     "role": "SoftwareEngineer",
     "skills": [
       "Html",

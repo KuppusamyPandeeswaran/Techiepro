@@ -1,42 +1,32 @@
 import React from "react";
-// import profile from "./profile.json";
-
-const profiles = [
-  { name: "Santhanakrishnan", img: "img_avatar.png", id: "1" },
-  { name: "Pandeeswaran", img: "img_avatar.png", id: "2" },
-  { name: "Prakash", img: "img_avatar.png" },
-  { name: "Ganesh", img: "img_avatar.png" },
-  { name: "Parthiban", img: "img_avatar.png" },
-  { name: "Karunamurthy", img: "img_avatar.png" },
-  { name: "Lokesh", img: "img_avatar.png" },
-  { name: "Dinesh", img: "img_avatar.png" },
-  { name: "Sathish", img: "img_avatar.png" },
-  { name: "Harish", img: "img_avatar.png" },
-  { name: "Ranjith", img: "img_avatar.png" },
-];
+import profiles from "./profile.json";
+import { Link } from "react-router-dom";
 
 export default function ProfileCards() {
   return (
+    <>
     <div className="p-20 gap-6 grid grid-cols-3">
-      {profiles.map((profile, index) => (
+      {profiles.map((userdata, index) => (
         <div
           key={index}
           className="p-8 rounded-2xl bg-white text-center flex flex-col items-center"
         >
           <img
-            src={profile.img}
-            alt={profile.name}
+            src={userdata.photo}
+            alt={userdata.username}
             className="w-52 h-52 mb-3 rounded-3xl"
           />
-          <h2 className="m-4 text-2xl font-semibold">{profile.name}</h2>
-          <a
-            href="#"
-            className="p-2 rounded-lg bg-slate-400 hover:bg-white shadow-2xl"
+          <h2 className="m-4 text-2xl font-semibold">{userdata.username}</h2>
+          <Link
+          to={`/${userdata.username}`}
+          state={{userdata}}            
+          className="p-2 rounded-lg bg-slate-400 hover:bg-white shadow-2xl"
           >
             View Profile
-          </a>
+          </Link>  
         </div>
       ))}
     </div>
+    </>
   );
 }

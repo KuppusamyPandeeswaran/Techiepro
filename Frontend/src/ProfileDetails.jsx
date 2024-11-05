@@ -2,12 +2,15 @@ import React from "react";
 import Navbar from "./Navbar";
 import SocialLinks from "./SocialLinks";
 import Skills from "./Skills";
-import profileData from "./profile.json";
+import { useLocation } from "react-router-dom";
 
 export default function ProfileDetails() {
+  const location = useLocation();
+  const {userdata} = location.state;
+
   return (
     <>
-      {profileData.map((userdata) => (
+     
         <div key={userdata.username}>
           <div className="max-w-screen-2xl mx-24 pt-10 px-10 pb-5">
             <Navbar />
@@ -74,7 +77,7 @@ export default function ProfileDetails() {
             </div>
           </section>
         </div>
-      ))}
+      
     </>
   );
 }
