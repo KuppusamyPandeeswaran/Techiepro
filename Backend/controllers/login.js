@@ -1,49 +1,47 @@
 const Login = require('../models/login');
 
 //User login
-exports.techie_login = async (req, res, next) => {
-    const email = req.body.email;
-    const pwd = req.body.pwd;
-    try {
-        const outres = await Login.techielogin(email).then(function (val) {
-            let promise = new Promise(function (resolve, reject) {
-                setTimeout(function () {
-                    resolve(val);
-                }, 200);
-            })
-            return promise;
-        });
+exports.techie_signin = async (req, res, next) => {
+  const { email, pwd } = req.body;
 
-        
-        if (outres.rows.length !== 1) {
-            const error = new Error('Unauthorized access.');
-            error.statusCode = 401;
-            throw error;
-        }
-        else if(outres.rows[0].techie_login.msg == 'not allowed'){
-            const error = new Error('username and password you entered don`t match.');
-            error.statusCode = 401;
-            throw error;
-        }
-        
+  if (!email || !pwd) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Email and password are required',
+    });
+  }
 
-        if(pwd == outres.rows[0].techie_login.status.profile.pwd){
-            const storedUser = outres.rows[0].techie_login.status.profile;
-            console.log(storedUser);
-            res.send(storedUser);
-        }
-        else{
-            const error = new Error('Unauthorized access.');
-            error.statusCode = 401;
-            throw error;
-        }
+  try {
+    const outres = await Login.techielogin(email);
 
-        
-    } catch (err) {
-        if (!err.statusCode) {
-            err.statusCode = 500;
-        }
-        next(err);
+    if (!outres || !outres.rows || outres.rows.length !== 1) {
+      return res.status(401).json({
+        status: 'fail',
+        message: 'Invalid email or password',
+      });
     }
 
+    const loginResult = outres.rows[0].techie_login;
+    if (loginResult.msg === 'not allowed') {
+      return res.status(401).json({
+        status: 'fail',
+        message: 'Invalid email or password',
+      });
+    }
+
+    const storedUser = loginResult.status.profile;
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user: storedUser,
+      },
+    });
+  } catch (err) {
+    console.error('Error in techie_signin:', err);
+    res.status(500).json({
+      status: 'error',
+      message: 'An error occurred during sign in',
+    });
+  }
 };

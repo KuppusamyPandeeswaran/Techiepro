@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const { techie_login } = require('../controllers/login');
+const { techie_signin } = require('../controllers/login');
 
-router.route('/').get(techie_login);
+router.route('/signin').get(techie_signin);
+// router.route('/signup').get(techie_signup);
 
 module.exports = router;

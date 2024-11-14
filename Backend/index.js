@@ -26,7 +26,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/v1/login', loginRouter);
+app.use('/api/v1/', loginRouter);
 app.use('/api/v1/techie', techieRouter);
 
 const PORT = process.env.PORT || 3000;
