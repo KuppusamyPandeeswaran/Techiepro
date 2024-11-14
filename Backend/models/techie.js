@@ -7,7 +7,7 @@ module.exports = class Techie {
 
   //Retrieve Techie information
   static singletechie(userid) {
-    return db.query(`SELECT public.single_techie('${userid}');`);
+    return db.query(`SELECT public.get_single_techie('${userid}');`);
   }
 
   static alltechie() {

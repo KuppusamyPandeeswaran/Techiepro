@@ -1,52 +1,72 @@
 const Techie = require('../models/techie');
 
-//User preference
 exports.get_single_techie = async (req, res, next) => {
   const userid = req.params.id;
-  // const userid = '1';
-  console.log(userid);
-  try {
-    const outres = await Techie.singletechie(userid).then(function (val) {
-      let promise = new Promise(function (resolve, reject) {
-        setTimeout(function () {
-          resolve(val);
-        }, 200);
-      });
-      return promise;
+  if (!userid) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'User ID is required',
     });
+  }
 
-    if (outres.rows.length !== 1) {
-      const error = new Error('userid could not found.');
-      error.statusCode = 401;
-      throw error;
+  try {
+    const outres = await Techie.singletechie(userid);
+    if (!outres || !outres.rows || outres.rows.length !== 1) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Techie not found',
+      });
     }
 
-    const storedUser = outres.rows[0];
-    //console.log(storedUser)
-    res.send(storedUser);
+    const storedUser = outres.rows[0].get_single_techie;
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user: storedUser,
+      },
+    });
   } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
+    console.error('Error in get_single_techie:', err);
+    res.status(500).json({
+      status: 'error',
+      message: 'An error occurred while fetching the Techie',
+    });
   }
 };
 
 exports.get_all_techie = async (req, res, next) => {
   try {
-    const result = await Techie.alltechie();
+    const outres = await Techie.alltechie();
 
-    if (result.rows.length === 0) {
-      const error = new Error('Could not find any Techies.');
-      error.statusCode = 404;
-      throw error;
+    if (!outres.rows || outres.rows.length === 0) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Could not find any Techies',
+      });
+    }
+    const techies = outres.rows[0].get_all_techie;
+
+    if (!Array.isArray(techies) || techies.length === 0) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'No Techies found in the database',
+      });
     }
 
-    res.send(result.rows);
+    res.status(200).json({
+      status: 'success',
+      results: techies.length,
+      data: {
+        users: techies,
+      },
+    });
   } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
+    console.error('Error in get_all_techie:', err);
+    const statusCode = err.statusCode || 500;
+    res.status(statusCode).json({
+      status: 'error',
+      message: 'An error occurred while fetching Techies',
+    });
   }
 };
