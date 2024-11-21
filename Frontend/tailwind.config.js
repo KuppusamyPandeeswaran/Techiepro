@@ -7,6 +7,7 @@ export default {
         rubik: ["Rubik", "sans-serif"],
         inter: ["Inter", "sans-serif"],
       },
+      backgroundImage: {},
     },
   },
   plugins: [],

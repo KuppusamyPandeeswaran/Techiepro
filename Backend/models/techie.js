@@ -5,12 +5,35 @@ module.exports = class Techie {
     this.uuid = uuid;
   }
 
-  //Retrieve Techie information
+  // Getting single user
   static singletechie(userid) {
     return db.query(`SELECT public.get_single_techie('${userid}');`);
   }
 
+  // Getting single users
   static alltechie() {
     return db.query(`SELECT public.get_all_techie();`);
+  }
+
+  // Updating single user
+  static patchtechie(uid, fieldsToUpdate) {
+    const { uname, uemail, mobile, urole, addr } = fieldsToUpdate;
+
+    const query = `
+        SELECT update_techie(
+            $1, $2, $3, $4, $5, $6, NULL
+        )
+    `;
+
+    const values = [
+      uid,
+      uname !== undefined ? uname : null,
+      uemail !== undefined ? uemail : null,
+      mobile !== undefined ? mobile : null,
+      urole !== undefined ? urole : null,
+      addr !== undefined ? addr : null,
+    ];
+
+    return db.query(query, values);
   }
 };

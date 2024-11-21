@@ -1,0 +1,280 @@
+-------------------enum-------------------------------------------
+
+create type m_level as enum ('junior', 'senior');
+
+---------------------------teammember----------------------------------------
+
+CREATE TABLE IF NOT EXISTS public.teammember
+(
+    memid uuid NOT NULL,
+    username character varying COLLATE pg_catalog."default",
+    full_name character varying COLLATE pg_catalog."default",
+    email character varying COLLATE pg_catalog."default" NOT NULL,
+    phoneno character varying COLLATE pg_catalog."default" NOT NULL,
+    address text COLLATE pg_catalog."default",
+    dob date,
+    country character varying COLLATE pg_catalog."default",
+    pwd character varying COLLATE pg_catalog."default",
+    photo_loc character varying COLLATE pg_catalog."default",
+    bio text COLLATE pg_catalog."default",
+    regdate timestamp without time zone,
+    status boolean,
+    member_level m_level,
+    rol character varying COLLATE pg_catalog."default",
+    moddate timestamp without time zone,
+    createdate timestamp without time zone,
+    CONSTRAINT teammember_pkey PRIMARY KEY (memid, email, phoneno),
+    CONSTRAINT teammember_memid_key UNIQUE (memid),
+    CONSTRAINT teammember_username_key UNIQUE (username)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.teammember
+    OWNER to postgres;
+----------------------------------------------------------------------
+INSERT INTO public.teammember(
+	memid, username, full_name, email, phoneno, address, dob, country, pwd, photo_loc, bio, regdate, status, member_level, rol, moddate, createdate)
+	VALUES ('5dcd17e4-e2cd-4eb2-8d73-e89abff1849a', 'sathi', 'sathish', 'sathish.s@cli.in', '7639750827', 'chennai', '1995-03-14', 'india', '12345', 
+       'http//', 'xxxxxx', '2024-11-15 15:30:00', 'true', 'junior', 'developer', '2024-11-15 15:30:00', '2024-11-15 15:30:00');
+-----------------------------------------------------------------------
+---------------------------------skillset----------------------------------------
+
+CREATE TABLE IF NOT EXISTS public.skillset
+(
+    technical_skills json[],
+    experience_years integer,
+    job_titles text[] COLLATE pg_catalog."default",
+    languages_spoken text[] COLLATE pg_catalog."default",
+    github_url character varying COLLATE pg_catalog."default",
+    linkedin_url character varying COLLATE pg_catalog."default",
+    portfolio_url character varying COLLATE pg_catalog."default",
+    memid uuid,
+    CONSTRAINT skillset_memid_fkey FOREIGN KEY (memid)
+        REFERENCES public.teammember (memid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.skillset
+    OWNER to postgres;
+-----------------------------------------------------------------------
+
+INSERT INTO public.skillset(
+	technical_skills, experience_years, job_titles, languages_spoken, github_url, linkedin_url, portfolio_url, memid)
+	VALUES (array['{"frontend": "html","level": "intermediate","years": "1"}'::json,'{"frontend": "css","level": "intermediate","years": "1"}'::json], 
+         1, array['software developer','fullstack'], array['tamil','enlish'], 'http//', 'http//', 'http//', '5dcd17e4-e2cd-4eb2-8d73-e89abff1849a');
+
+----------------------------------------------------------------------------
+---------------------------------useractivity------------------------------
+
+CREATE TABLE IF NOT EXISTS public.useractivity
+(
+    last_login timestamp without time zone,
+    login_attempts integer,
+    account_locked boolean,
+    device_last_login character varying COLLATE pg_catalog."default",
+    browser_last_login character varying COLLATE pg_catalog."default",
+    username_email character varying COLLATE pg_catalog."default",
+    memid uuid,
+    CONSTRAINT useractivity_memid_fkey FOREIGN KEY (memid)
+        REFERENCES public.teammember (memid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.useractivity
+    OWNER to postgres;
+---------------------------------------------------------------------------------
+
+INSERT INTO public.useractivity(
+	last_login, login_attempts, account_locked, device_last_login, browser_last_login, username_email, memid)
+	VALUES ('2024-11-16 10:30:00', 2, false, 'android', 'xxxx', 'sathi', '5dcd17e4-e2cd-4eb2-8d73-e89abff1849a');
+
+-----------------------------------------------------------------------------------------------------
+----------------------------------contactus-----------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS public.contactus
+(
+    fullname character varying COLLATE pg_catalog."default",
+    email character varying COLLATE pg_catalog."default",
+    yourmessage text COLLATE pg_catalog."default"
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.contactus
+    OWNER to postgres;
+------------------------------------------------------------------------------------------------------
+----------------------------------all_profile---------------------------------------------------------
+
+create or replace function all_profile()
+returns json 
+as
+$$
+declare
+all_profiles json;
+begin
+select json_agg(row_to_json(t)) into all_profiles from(select * from teammember)t;
+return all_profiles;
+end;
+$$
+language plpgsql;
+
+select * from all_profile();
+
+-----------------------------------------------------------------------------------------------------------
+---------------------------------------single_profile------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION single_profile(
+	t_memid uuid)
+    RETURNS json
+AS
+$$
+DECLARE
+ tm_cnt NUMERIC;
+ profile CHARACTER VARYING;
+ 
+BEGIN
+
+ SELECT INTO tm_cnt COUNT(t_memid) AS cnt FROM teammember WHERE memid = t_memid;
+ 
+ IF tm_cnt = 1 THEN
+ 	profile = (select row_to_json(t) from (select memid, username, full_name, email, phoneno, address, dob, country, pwd, photo_loc, bio, regdate, status, member_level, rol, moddate, createdate from teammember WHERE memid = t_memid) t);
+ 	RETURN concat('{"status":{"msg" : "live", "profile":',profile,'}}');
+ ELSE
+ 	  RETURN '{"msg" : "no more"}';
+ END IF;
+ 
+END;
+$$
+language plpgsql;
+
+
+select * from single_profile('5dcd17e4-e2cd-4eb2-8d73-e89abff1849a');
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------login--(auth_user_or_email character varying, auth_pwd character varying)------------------------------
+
+CREATE OR REPLACE FUNCTION login( 
+    auth_user_or_email character varying, 
+    auth_pwd character varying)
+RETURNS json
+AS
+$$
+DECLARE
+    tm_cnt NUMERIC;
+    msg VARCHAR(1000);
+BEGIN
+    SELECT INTO tm_cnt 
+        COUNT(*) 
+    FROM teammember 
+    WHERE 
+        pwd = auth_pwd 
+        AND (username = auth_user_or_email OR email = lower(auth_user_or_email));
+
+    IF tm_cnt = 1 THEN
+        msg = (
+            SELECT row_to_json(t)
+            FROM (
+                SELECT 
+                    memid, username, full_name, email, phoneno, address, 
+                    dob, country, pwd, photo_loc, bio, regdate, status, 
+                    member_level, rol, moddate, createdate 
+                FROM teammember 
+                WHERE 
+                    pwd = auth_pwd 
+                    AND (username = auth_user_or_email OR email = lower(auth_user_or_email))
+            ) t
+        );
+        RETURN concat('{"status":{"msg":"live","profile":', msg, '}}');
+    ELSE
+        RETURN '{"msg":"not allowed"}';
+    END IF;
+END;
+$$
+LANGUAGE plpgsql;
+
+SELECT * FROM login('sathish.s@cli.in', '12345');
+SELECT * FROM login('sathi', '12345');
+
+-------------------------------------------------------------------------------------------------------------
+------------------------------------------insert_contactus-----------------------------------------------------
+
+CREATE OR REPLACE FUNCTION insert_contactus(
+    c_fullname VARCHAR,
+    c_email VARCHAR,
+    c_yourmessage TEXT
+)
+RETURNS VOID AS $$
+BEGIN
+    INSERT INTO contactus (fullname, email, yourmessage)
+    VALUES (c_fullname, c_email, c_yourmessage);
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insert_contactus('sathish', 'sathish.s@cli.in', 'test message.');
+
+================================================================================================================
+------------------------------login(if log in failed add count in login_attempts)--------------------------------
+
+CREATE OR REPLACE FUNCTION login(
+    auth_user_or_email CHARACTER VARYING,
+    auth_pwd CHARACTER VARYING
+)
+RETURNS JSON
+AS
+$$
+DECLARE
+    tm_cnt NUMERIC;
+    msg VARCHAR(1000);
+BEGIN
+    SELECT INTO tm_cnt
+        COUNT(*)
+    FROM teammember
+    WHERE
+        pwd = auth_pwd
+        AND (username = auth_user_or_email OR email = LOWER(auth_user_or_email));
+    
+    IF tm_cnt = 1 THEN
+        msg = (
+            SELECT row_to_json(t)
+            FROM (
+                SELECT
+                    memid, username, full_name, email, phoneno, address, dob, country, pwd, photo_loc, bio, 
+                     regdate, status, member_level, rol, moddate, createdate
+                FROM teammember
+                WHERE
+                    pwd = auth_pwd
+                    AND (username = auth_user_or_email OR email = LOWER(auth_user_or_email))
+            ) t
+        );
+        RETURN CONCAT('{"status":{"msg":"live","profile":', msg, '}}');
+    ELSE
+        UPDATE useractivity
+        SET login_attempts = login_attempts + 1
+        WHERE username_email = auth_user_or_email;
+        
+        IF NOT FOUND THEN
+            INSERT INTO useractivity (username_email, login_attempts)
+            VALUES (
+                auth_user_or_email,
+                CASE WHEN POSITION('@' IN auth_user_or_email) > 0 THEN LOWER(auth_user_or_email) ELSE NULL END,
+                1
+            );
+        END IF;
+
+        RETURN '{"msg":"not allowed"}';
+    END IF;
+END;
+$$
+LANGUAGE plpgsql;
+
+
+SELECT * FROM login('sathi', '1234');
+
+select * from useractivity;
