@@ -22,7 +22,7 @@ export default function ProfileDetails() {
         </div>
         <div className="parent-grid pb-20 grid grid-cols-3 gap-2 ">
           {/* Left section */}
-          <div className="details-section px-6 pt-4 pb-4 border-2 border-[#D0E7F5] rounded-lg border-solid ml-8 col-span-1">
+          <div className="details-section px-6 pt-4 pb-4 border-2 border-[#D0E7F5] rounded-lg border-solid ml-8 col-span-1 bg-[#cceeff]">
             <img
               src="profile.jpg"
               alt=""
@@ -66,7 +66,7 @@ export default function ProfileDetails() {
             </ul>
           </div>
           {/* Right section  */}
-          <div className="bio-section px-6 pt-4 border-2 border-[#D0E7F5] rounded-lg border-solid mr-8 second-grid pb-8 col-span-2 ">
+          <div className="bio-section px-6 pt-4 border-2 border-[#D0E7F5] rounded-lg border-solid mr-8 second-grid pb-8 col-span-2 bg-[#cceeff]">
             <div className="grid grid-cols-2 gap-4">
               <div className="div1 col-span-2 mb-6">
                 <div className="flex justify-between">
@@ -88,27 +88,27 @@ export default function ProfileDetails() {
                 </p>
               </div>
               <div className="div2 ">
-                <h3 className="text-sm">Current Organization</h3>
+                <h3 className="text-sm font-semibold">Current Organization</h3>
                 <p>Company Law Insitute of India</p>
               </div>
               <div className="div3 ">
-                <h3 className="text-sm">Role</h3>
+                <h3 className="text-sm font-semibold">Role</h3>
                 <p>{userdata.role}</p>
               </div>
               <div className="div4">
-                <h3 className="text-sm">Languages</h3>
+                <h3 className="text-sm font-semibold">Languages</h3>
                 <p>Tamil, English</p>
               </div>
               <div className="div5">
-                <h3 className="text-sm">Birthday</h3>
+                <h3 className="text-sm font-semibold">Birthday</h3>
                 <p>28/July/1996</p>
               </div>
               <div className="div6">
-                <h3 className="text-sm">Education</h3>
+                <h3 className="text-sm font-semibold">Education</h3>
                 <p>St. Peters University</p>
               </div>
               <div className="div7">
-                <h3 className="text-sm">Work History</h3>
+                <h3 className="text-sm font-semibold">Work History</h3>
                 <p>Debug Technician at Flextronics</p>
                 <p>Software Engineer at Company Law Insitute of India</p>
               </div>

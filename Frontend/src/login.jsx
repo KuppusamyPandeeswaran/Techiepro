@@ -16,9 +16,9 @@ const Login = () => {
   return (
     <>
       <Navbar />
-      <div className="flex min-h-screen bg-[#f0faff]  px-20 pt-20">
+      <div className="flex min-h-screen bg-[#f0faff] px-20 pt-20  pb-20 items-center justify-center">
         {/* Left Section */}
-        <div className="w-full max-w-md mx-auto flex flex-col justify-center p-8 bg-[#f0faff] ">
+        <div className="w-full max-w-md mx-auto flex flex-col justify-center rounded-lg p-8 ">
           {/* Logo */}
 
           {/* Welcome Back */}
@@ -124,7 +124,7 @@ const Login = () => {
         </div>
 
         {/* Right Section */}
-        <div className="hidden lg:flex flex-1 items-center justify-center">
+        <div className="hidden lg:flex items-center justify-center ">
           <img
             src="/login.png"
             alt="Decorative Illustration"
