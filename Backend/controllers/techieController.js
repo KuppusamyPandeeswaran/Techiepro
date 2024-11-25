@@ -20,7 +20,7 @@ exports.get_single_techie = async (req, res, next) => {
       });
     }
 
-    const storedUser = outres.rows[0].single_profile.status.profile;
+    const storedUser = outres.rows[0].single_profile.status;
 
     res.status(200).json({
       status: 'success',
@@ -52,7 +52,7 @@ exports.get_all_techie = async (req, res, next) => {
     if (!Array.isArray(techies) || techies.length === 0) {
       return res.status(404).json({
         status: 'fail',
-        message: 'No Techies found in the database',
+        message: 'No Techies found',
       });
     }
 
