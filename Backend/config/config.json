@@ -3,7 +3,7 @@
   "user": "postgres",
   "port": 5432,
   "password": "Harish.bg@cli",
-  "database": "techiepro",
+  "database": "Techiepro",
 
   "jwtExpiration": 3600,
   "jwtRefreshExpiration": 86400,

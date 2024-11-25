@@ -7,12 +7,12 @@ module.exports = class Techie {
 
   // Getting single user
   static singletechie(userid) {
-    return db.query(`SELECT public.get_single_techie('${userid}');`);
+    return db.query(`SELECT public.single_profile('${userid}');`);
   }
 
   // Getting single users
   static alltechie() {
-    return db.query(`SELECT public.get_all_techie();`);
+    return db.query(`SELECT public.all_profile()`);
   }
 
   // Updating single user

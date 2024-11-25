@@ -1,4 +1,4 @@
-const Techie = require('../models/techie');
+const Techie = require('../models/techieModel');
 
 exports.get_single_techie = async (req, res, next) => {
   const userid = req.params.id;
@@ -11,6 +11,8 @@ exports.get_single_techie = async (req, res, next) => {
 
   try {
     const outres = await Techie.singletechie(userid);
+    console.log(outres);
+
     if (!outres || !outres.rows || outres.rows.length !== 1) {
       return res.status(404).json({
         status: 'fail',
@@ -18,7 +20,7 @@ exports.get_single_techie = async (req, res, next) => {
       });
     }
 
-    const storedUser = outres.rows[0].get_single_techie;
+    const storedUser = outres.rows[0].single_profile.status.profile;
 
     res.status(200).json({
       status: 'success',
@@ -45,7 +47,7 @@ exports.get_all_techie = async (req, res, next) => {
         message: 'Could not find any Techies',
       });
     }
-    const techies = outres.rows[0].get_all_techie;
+    const techies = outres.rows[0].all_profile;
 
     if (!Array.isArray(techies) || techies.length === 0) {
       return res.status(404).json({

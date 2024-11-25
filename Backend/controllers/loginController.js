@@ -1,32 +1,33 @@
-const Login = require('../models/login');
+const Login = require('../models/loginModel');
 
 ///////////techieSigninHandler
 
 exports.techie_signin = async (req, res, next) => {
-  const { email, pwd } = req.body;
+  const { userORemail, pwd } = req.body;
+  console.log(userORemail, pwd);
 
-  if (!email || !pwd) {
+  if (!userORemail || !pwd) {
     return res.status(400).json({
       status: 'fail',
-      message: 'Email and password are required',
+      message: 'Username or Email and password are required',
     });
   }
 
   try {
-    const outres = await Login.techiesignin(email);
+    const outres = await Login.techiesignin(userORemail, pwd);
 
     if (!outres || !outres.rows || outres.rows.length !== 1) {
       return res.status(401).json({
         status: 'fail',
-        message: 'Invalid email or password',
+        message: 'Invalid credentials',
       });
     }
 
-    const loginResult = outres.rows[0].techie_login;
+    const loginResult = outres.rows[0].login;
     if (loginResult.msg === 'not allowed') {
       return res.status(401).json({
         status: 'fail',
-        message: 'Invalid email or password',
+        message: 'Invalid credentials',
       });
     }
 

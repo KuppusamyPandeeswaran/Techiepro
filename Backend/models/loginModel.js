@@ -6,8 +6,8 @@ module.exports = class Techie {
   }
 
   //Retrieve Techie information
-  static techiesignin(email) {
-    return db.query(`SELECT public.techie_login('${email}');`);
+  static techiesignin(userORemail, pwd) {
+    return db.query(`SELECT public.login('${userORemail}', '${pwd}')`);
   }
   static techiesignup(uid, uname, uemail, mobile, urole, addr, pwd) {
     return db.query(
