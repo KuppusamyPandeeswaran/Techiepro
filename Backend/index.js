@@ -1,7 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
-// const techieRoute = require('./routes/techie');
 const techieRouter = require('./routes/techieRouter');
 const loginRouter = require('./routes/loginRouter');
 const app = express();

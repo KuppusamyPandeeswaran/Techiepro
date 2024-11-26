@@ -18,7 +18,7 @@ URL:
 GET /api/v1/signin
 
 Description:
-Allows a user to log in by providing credentials.
+Allows a user to log in by providing username or email and password.
 
 #### Request Body:
 
@@ -81,7 +81,7 @@ GET /api/v1/techie
 Description:
 Fetches all the techies.
 
-Response:
+#### Response:
 
 - On success:
 
@@ -136,7 +136,7 @@ Path Parameters:
 
 userid (required): The ID of the user to fetch.
 
-Response:
+#### Response:
 
 - On success:
 
