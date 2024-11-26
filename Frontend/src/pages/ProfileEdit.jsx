@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import Navbar from "./Navbar";
 
 const ProfileEdit = () => {
   return (
     <>
-      <Navbar />
       <div className="pt-16 pb-8 px-8 bg-[#f0faff]">
         <h1 className="text-3xl font-semibold ">Edit Profile</h1>
       </div>

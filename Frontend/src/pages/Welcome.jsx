@@ -1,10 +1,8 @@
 import React from "react";
-import Navbar from "./Navbar";
 
 export default function Welcome() {
   return (
     <div className="bg-[#f0faff]">
-      <Navbar />
       <main>
         <div className="flex items-center justify-center min-h-screen ">
           <div className=" rounded-2xl p-6 w-full">

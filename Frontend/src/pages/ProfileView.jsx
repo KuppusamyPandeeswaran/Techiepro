@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "./Navbar";
 // import { FaLinkedinIn, FaGithub, FaLink } from "react-icons/fa";
 import { FaLinkedinIn } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
@@ -7,13 +6,12 @@ import { FaLink } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-export default function ProfileDetails() {
+export default function ProfileView() {
   const location = useLocation();
   const { userdata } = location.state;
   return (
     <>
       <div key={userdata.username} className="bg-[#f0faff]">
-        <Navbar />
         <div className="pt-16 pb-8 px-8 ">
           <h1 className="text-3xl font-semibold">Profile</h1>
           {/* <a href="" className="text-xl ">

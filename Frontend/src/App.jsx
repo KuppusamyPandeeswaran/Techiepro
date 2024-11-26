@@ -1,24 +1,25 @@
 import React from "react";
-import ProfileDetails from "./ProfileDetails";
-import Login from "./Login";
-import ProfileCards from "./ProfileCards";
-import Welcome from "./Welcome";
+import ProfileView from "./pages/ProfileView";
+import Login from "./pages/login";
+import ProfileDashboard from "./pages/ProfileDashboard";
+import Welcome from "./pages/Welcome";
 import { Routes, Route } from "react-router-dom";
-import Register from "./Register";
-import About from "./About";
-import Contact from "./Contact";
-import ProfileEdit from "./ProfileEdit";
+import Register from "./pages/Register";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import ProfileEdit from "./pages/ProfileEdit";
+import Navbar from "./components/Navbar";
 
 export default function App() {
   return (
-    <div className="bg-slate-100 ">
-      {/* <Register /> */}
+    <div className="bg-[#f0faff] ">
+      <Navbar />
       <Routes>
         <Route path="/" element={<Welcome />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
-        <Route path="/ProfileCards" element={<ProfileCards />} />
-        <Route path="/:id" element={<ProfileDetails />} />
+        <Route path="/ProfileCards" element={<ProfileDashboard />} />
+        <Route path="/:id" element={<ProfileView />} />
         <Route path="/About" element={<About />} />
         <Route path="/Contact" element={<Contact />} />
         <Route path="/ProfileEdit" element={<ProfileEdit />} />

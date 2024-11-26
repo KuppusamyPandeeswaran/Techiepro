@@ -1,11 +1,9 @@
 import React from "react";
-import Navbar from "./Navbar";
 
 export default function About() {
   return (
     <>
       <div className="bg-[#f0faff]">
-        <Navbar />
         <div className="flex items-center max-w-screen-xl mx-auto  px-4 sm:px-6 lg:px-8 ">
           <div className="w-full sm:w-1/2 p-5">
             <div className="flex justify-center">

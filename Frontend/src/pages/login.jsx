@@ -1,48 +1,43 @@
 import React, { useState } from "react";
-import Navbar from "./Navbar";
+import { FaGithub } from "react-icons/fa";
 
-const Register = () => {
-  const [username, setUsername] = useState("");
+// eslint-disable-next-line react-refresh/only-export-components
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login Data:", { username, email, password });
-    setUsername("");
+    console.log("Login Data:", { email, password });
     setEmail("");
     setPassword("");
   };
-
   return (
-    <div className="bg-[#f0faff]">
-      <Navbar />
-      <div className="flex min-h-screen bg-[#f0faff]  px-20 pt-20">
+    <>
+      <div className="flex h-screen bg-[#f0faff] px-20 pt-20  pb-20 items-center justify-center">
         {/* Left Section */}
-        <div className="w-full max-w-md mx-auto flex flex-col justify-center p-8 bg-[#f0faff] ">
+        <div className="w-full max-w-md mx-auto flex flex-col justify-center rounded-lg p-8 ">
           {/* Logo */}
 
           {/* Welcome Back */}
-          <h2 className="text-2xl font-bold mb-10 text-gray-900">Welcome</h2>
+          <h2 className="text-2xl font-bold mb-2 text-gray-900">
+            Welcome back
+          </h2>
+          <p className="text-gray-400 mb-6">
+            Dont have an account?{" "}
+            <a
+              href="#"
+              className="text-blue-400 hover:underline"
+              onClick={() => {
+                window.location.href = "/Register";
+              }}
+            >
+              Sign up.
+            </a>
+          </p>
 
           {/* Form */}
           <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
-              <label
-                className="block text-sm font-medium text-gray-900"
-                htmlFor="username"
-              >
-                Name
-              </label>
-              <input
-                type="text"
-                id="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="your name"
-                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring focus:ring-blue-500"
-              />
-            </div>
             <div>
               <label
                 className="block text-sm font-medium text-gray-900"
@@ -83,6 +78,9 @@ const Register = () => {
                 />
                 <span className="ml-2 text-sm text-gray-400">Remember me</span>
               </label>
+              <a href="#" className="text-sm text-blue-400 hover:underline">
+                Forgot password?
+              </a>
             </div>
             <button
               type="submit"
@@ -91,7 +89,7 @@ const Register = () => {
                 window.location.href = "/ProfileCards";
               }}
             >
-              Register
+              Sign in to your account
             </button>
           </form>
 
@@ -112,19 +110,20 @@ const Register = () => {
               />
               Sign in with Google
             </button>
-            <button className="flex items-center justify-center w-full py-2 px-4 bg-gray-700 rounded-md hover:bg-gray-600 text-white">
-              <img
+            <button className="flex items-center justify-center gap-2 w-full py-2 px-4 bg-gray-700 rounded-md hover:bg-gray-600 text-white">
+              {/* <img
                 src="https://www.svgrepo.com/svg/516640/github.svg"
                 alt="Github"
                 className="w-5 h-5 mr-2"
-              />
+              /> */}
+              <FaGithub color="#fff" size={25} />
               Sign in with Github
             </button>
           </div>
         </div>
 
         {/* Right Section */}
-        <div className="hidden lg:flex flex-1 items-center justify-center">
+        <div className="hidden lg:flex items-center justify-center ">
           <img
             src="/login.png"
             alt="Decorative Illustration"
@@ -132,8 +131,7 @@ const Register = () => {
           />
         </div>
       </div>
-    </div>
+    </>
   );
 };
-
-export default Register;
+export default Login;
