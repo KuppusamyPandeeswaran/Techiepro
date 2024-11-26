@@ -1,17 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 // import { FaLinkedinIn, FaGithub, FaLink } from "react-icons/fa";
 import { FaLinkedinIn } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { FaLink } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-export default function ProfileView() {
-  const location = useLocation();
-  const { userdata } = location.state;
+export default function ProfileView({ selectedId }) {
+  const [singleTechie, setSingleTechie] = useState(null);
+  const [userid, setUserId] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem("userId", selectedId);
+  }, [selectedId]);
+
+  useEffect(() => {
+    const uid = localStorage.getItem("userId");
+    setUserId(uid);
+  }, []);
+
+  const getSingleTechie = async () => {
+    try {
+      const res = await fetch(`http://127.0.0.1:3000/api/v1/techie/${userid}`);
+      const data = await res.json();
+      setSingleTechie(data.data.user.profile);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getSingleTechie();
+  }, [userid]);
+
+  if (!singleTechie) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
-      <div key={userdata.username} className="bg-[#f0faff]">
+      <div className="bg-[#f0faff]">
         <div className="pt-16 pb-8 px-8 ">
           <h1 className="text-3xl font-semibold">Profile</h1>
           {/* <a href="" className="text-xl ">
@@ -22,24 +50,26 @@ export default function ProfileView() {
           {/* Left section */}
           <div className="details-section px-6 pt-4 pb-4 border-2 border-[#D0E7F5] rounded-lg border-solid ml-8 col-span-1 bg-[#cceeff]">
             <img
-              src="profile.jpg"
+              src="./../profile.jpg"
               alt=""
               className="w-24 h-24 object-cover rounded-lg"
             />
-            <h1 className="text-lg mt-2 font-semibold">{userdata.username}</h1>
-            <p className="text-sm my-1">{userdata.role}</p>
-            <p className="text-sm my-1">Chennai</p>
+            <h1 className="text-lg mt-2 font-semibold">
+              {singleTechie.full_name}
+            </h1>
+            <p className="text-sm my-1">{singleTechie.rol}</p>
+            <p className="text-sm my-1">{singleTechie.address}</p>
             <div className="my-4">
               <h3 className="text-sm font-semibold">Email Address</h3>
-              <p>{userdata.email}</p>
+              <p>{singleTechie.email}</p>
             </div>
             <div className="my-4">
               <h3 className="text-sm font-semibold">Address</h3>
-              <p>{userdata.address}</p>
+              <p>{singleTechie.address}</p>
             </div>
             <div className="my-4">
               <h3 className="text-sm font-semibold">Mobile Number</h3>
-              <p>{userdata.mobile}</p>
+              <p>{singleTechie.phoneno}</p>
             </div>
             <h1 className="text-lg font-bold mb-4">Socials</h1>
 
@@ -77,13 +107,7 @@ export default function ProfileView() {
                     Edit Profile
                   </Link>
                 </div>
-                <p>
-                  {" "}
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Ullam libero non dolores magni ducimus maxime modi repellendus
-                  nisi. Adipisci culpa ex fuga nemo. Necessitatibus, magni.
-                  Sequi assumenda provident magni nulla.{" "}
-                </p>
+                <p>{singleTechie.bio}</p>
               </div>
               <div className="div2 ">
                 <h3 className="text-sm font-semibold">Current Organization</h3>
@@ -91,7 +115,7 @@ export default function ProfileView() {
               </div>
               <div className="div3 ">
                 <h3 className="text-sm font-semibold">Role</h3>
-                <p>{userdata.role}</p>
+                <p>{singleTechie.rol}</p>
               </div>
               <div className="div4">
                 <h3 className="text-sm font-semibold">Languages</h3>
@@ -99,7 +123,7 @@ export default function ProfileView() {
               </div>
               <div className="div5">
                 <h3 className="text-sm font-semibold">Birthday</h3>
-                <p>28/July/1996</p>
+                <p>{singleTechie.dob}</p>
               </div>
               <div className="div6">
                 <h3 className="text-sm font-semibold">Education</h3>
@@ -114,14 +138,14 @@ export default function ProfileView() {
             <h1 className="text-lg font-bold mb-4 mt-8">Skills</h1>
             <div>
               <div className="skill-list flex flex-wrap gap-2 ">
-                {userdata.skills.map((skill, index) => (
+                {/* {userdata.skills.map((skill, index) => (
                   <p
                     className=" border-2 border-[#00b0ff] rounded-lg py-1 px-2 text-sm hover:text-white hover:bg-[#00b0ff] transition-colors"
                     key={index}
                   >
                     {skill}
                   </p>
-                ))}
+                ))} */}
               </div>
             </div>
           </div>

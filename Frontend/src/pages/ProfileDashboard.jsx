@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
-import profiles from "./../assets/profile.json";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export default function ProfileDashboard() {
-  const [techies, setTechies] = useState([]);
-
+export default function ProfileDashboard({
+  techies,
+  handleTechies,
+  handleSelectedId,
+}) {
+  const navigate = useNavigate();
   const getallTechies = async () => {
     try {
       const res = await fetch(`http://127.0.0.1:3000/api/v1/techie`);
       const data = await res.json();
-      setTechies(data.data.users);
+      handleTechies(data.data.users);
     } catch (err) {
       console.log(err);
     }
@@ -34,7 +36,11 @@ export default function ProfileDashboard() {
           {techies.map((techie, index) => (
             <div
               key={techie.memid}
-              className="p-8 rounded-2xl flex flex-col items-center"
+              className="p-8 rounded-2xl flex flex-col items-center cursor-pointer"
+              onClick={() => {
+                handleSelectedId(techie.memid);
+                navigate(`/Profile/${techie.full_name}`);
+              }}
             >
               <div>
                 <img

@@ -7,7 +7,7 @@ export default function Navbar() {
         <nav className="flex items-center justify-between">
           <div className="flex items-center justify-center">
             <a href="/">
-              <img src="cli.png" alt="CLI logo" className="w-12 h-12" />
+              <img src="./../cli.png" alt="CLI logo" className="w-12 h-12" />
             </a>
           </div>
           <div className="flex items-center space-x-4 gap-8">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ProfileView from "./pages/ProfileView";
 import Login from "./pages/login";
 import ProfileDashboard from "./pages/ProfileDashboard";
@@ -11,15 +11,38 @@ import ProfileEdit from "./pages/ProfileEdit";
 import Navbar from "./components/Navbar";
 
 export default function App() {
+  const [techies, setTechies] = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
+
+  function handleTechies(data) {
+    setTechies(data);
+  }
+
+  function handleSelectedId(id) {
+    setSelectedId(id);
+  }
+
   return (
-    <div className="bg-[#f0faff] ">
+    <div className="bg-[#f0faff]">
       <Navbar />
       <Routes>
         <Route path="/" element={<Welcome />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
-        <Route path="/ProfileCards" element={<ProfileDashboard />} />
-        <Route path="/:id" element={<ProfileView />} />
+        <Route
+          path="/Profiles"
+          element={
+            <ProfileDashboard
+              techies={techies}
+              handleTechies={handleTechies}
+              handleSelectedId={handleSelectedId}
+            />
+          }
+        />
+        <Route
+          path="/Profile/:id"
+          element={<ProfileView selectedId={selectedId} />}
+        />
         <Route path="/About" element={<About />} />
         <Route path="/Contact" element={<Contact />} />
         <Route path="/ProfileEdit" element={<ProfileEdit />} />

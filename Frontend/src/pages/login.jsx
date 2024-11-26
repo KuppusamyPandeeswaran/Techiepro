@@ -15,11 +15,7 @@ const Login = () => {
   return (
     <>
       <div className="flex h-screen bg-[#f0faff] px-20 pt-20  pb-20 items-center justify-center">
-        {/* Left Section */}
         <div className="w-full max-w-md mx-auto flex flex-col justify-center rounded-lg p-8 ">
-          {/* Logo */}
-
-          {/* Welcome Back */}
           <h2 className="text-2xl font-bold mb-2 text-gray-900">
             Welcome back
           </h2>
@@ -35,8 +31,6 @@ const Login = () => {
               Sign up.
             </a>
           </p>
-
-          {/* Form */}
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label
@@ -86,7 +80,7 @@ const Login = () => {
               type="submit"
               className="w-full py-2 px-4 bg-blue-600 rounded-md text-white font-semibold hover:bg-blue-500"
               onClick={() => {
-                window.location.href = "/ProfileCards";
+                window.location.href = "/Profiles";
               }}
             >
               Sign in to your account
