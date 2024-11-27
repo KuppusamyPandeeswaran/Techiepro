@@ -29,6 +29,12 @@ export default function Navbar() {
             >
               Contact
             </a>
+            <a
+              href="/Resources"
+              className="text-gray-800 text-[16px] font-semibold hover:text-[#00b0ff]"
+            >
+              Resources
+            </a>
           </div>
           <div className="flex items-center justify-center">
             <a

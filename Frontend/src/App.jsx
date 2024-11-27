@@ -9,10 +9,18 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import ProfileEdit from "./pages/ProfileEdit";
 import Navbar from "./components/Navbar";
+import { initialVideos } from "./VideoData";
+import Resources from "./Pages/Resources";
 
 export default function App() {
   const [techies, setTechies] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
+  const [videos, setVideos] = useState(initialVideos);
+
+  const addVideo = (newVideo) => {
+    const videoWithId = { id: videos.length + 1, ...newVideo };
+    setVideos([...videos, videoWithId]);
+  };
 
   function handleTechies(data) {
     setTechies(data);
@@ -46,6 +54,7 @@ export default function App() {
         <Route path="/About" element={<About />} />
         <Route path="/Contact" element={<Contact />} />
         <Route path="/ProfileEdit" element={<ProfileEdit />} />
+        <Route path="/Resources" element={<Resources videos={videos} />} />
       </Routes>
     </div>
   );
