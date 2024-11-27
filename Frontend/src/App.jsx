@@ -11,6 +11,8 @@ import ProfileEdit from "./pages/ProfileEdit";
 import Navbar from "./components/Navbar";
 import { initialVideos } from "./VideoData";
 import Resources from "./Pages/Resources";
+import AddVideo from "./Pages/AddVideo";
+import VideoDetails from "./Pages/VideoDetails";
 
 export default function App() {
   const [techies, setTechies] = useState([]);
@@ -55,6 +57,11 @@ export default function App() {
         <Route path="/Contact" element={<Contact />} />
         <Route path="/ProfileEdit" element={<ProfileEdit />} />
         <Route path="/Resources" element={<Resources videos={videos} />} />
+        <Route path="/AddVideo" element={<AddVideo addVideo={addVideo} />} />
+        <Route
+          path="/VideoDetails/:videoId"
+          element={<VideoDetails videos={videos} />}
+        />
       </Routes>
     </div>
   );

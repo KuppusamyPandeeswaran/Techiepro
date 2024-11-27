@@ -49,6 +49,12 @@ const Resources = ({ videos }) => {
           <option value="CSS">CSS</option>
           <option value="Node.js">Node.js</option>
         </select>
+        <Link
+          to="/AddVideo"
+          className="ml-4 p-2 border border-gray-300 rounded-lg bg-white"
+        >
+          Add New Video
+        </Link>
       </div>
 
       {/* Video List */}
@@ -57,7 +63,7 @@ const Resources = ({ videos }) => {
           filteredVideos.map((video) => (
             <div
               key={video.id}
-              className="border p-4 rounded-lg shadow-lg bg-white"
+              className="border p-4 rounded-lg shadow-lg bg-[#e6f7ff]"
             >
               <h2 className="font-semibold text-lg mb-2">{video.title}</h2>
               <iframe
@@ -73,10 +79,10 @@ const Resources = ({ videos }) => {
                 {video.category}
               </span>
               <Link
-                to={`/superact/${video.id}`}
+                to={`/VideoDetails/${video.id}`}
                 className="text-blue-500 underline mt-2 block"
               >
-                View Full Video
+                View Details
               </Link>
             </div>
           ))
@@ -86,13 +92,6 @@ const Resources = ({ videos }) => {
           </p>
         )}
       </div>
-
-      <Link
-        to="/add-video"
-        className="mt-6 inline-block text-blue-500 underline"
-      >
-        Add New Video
-      </Link>
     </div>
   );
 };
