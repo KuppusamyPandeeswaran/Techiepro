@@ -23,7 +23,7 @@ export default function Welcome() {
               </a>
               <a
                 href="/About"
-                className="hover:text-[#00b0ff]"
+                className="hover:text-[#00b0ff] font-semibold"
                 onClick={() => {
                   window.location.href = "/About";
                 }}
