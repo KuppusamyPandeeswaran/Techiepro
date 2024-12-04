@@ -6,12 +6,32 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Login Data:", { email, password });
     setEmail("");
     setPassword("");
+
+    try {
+      let response = await fetch("http://127.0.0.1:3000/api/v1/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        window.location.href = "/Profiles";
+      } else {
+        console.error("Login failed");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   return (
     <>
       <div className="flex h-screen bg-[#f0faff] px-20 pt-20  pb-20 items-center justify-center">
@@ -105,11 +125,6 @@ const Login = () => {
               Sign in with Google
             </button>
             <button className="flex items-center justify-center gap-2 w-full py-2 px-4 bg-gray-700 rounded-md hover:bg-gray-600 text-white">
-              {/* <img
-                src="https://www.svgrepo.com/svg/516640/github.svg"
-                alt="Github"
-                className="w-5 h-5 mr-2"
-              /> */}
               <FaGithub color="#fff" size={25} />
               Sign in with Github
             </button>
