@@ -55,11 +55,6 @@ export default function ProfileDashboard({
                   {techie.rol}
                 </h2>
               </div>
-              {/* <span className="flex gap-2 ml-2">
-                <FaLinkedin className=" w-6 h-6" />
-
-                <FiGithub className=" w-6 h-6" />
-              </span> */}
             </div>
           ))}
         </div>

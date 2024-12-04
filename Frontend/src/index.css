@@ -5,6 +5,9 @@
 @tailwind utilities;
 
 @layer components {
+  ::selection {
+    background: #00b0ff;
+  }
   /* .parent-grid {
     display: grid;
     grid-template-columns: 450px 1fr;
