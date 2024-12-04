@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS public.teammember
     moddate timestamp without time zone,
     createdate timestamp without time zone,
     CONSTRAINT teammember_pkey PRIMARY KEY (memid, email, phoneno),
+    CONSTRAINT teammember_email_key UNIQUE (email),
     CONSTRAINT teammember_memid_key UNIQUE (memid),
     CONSTRAINT teammember_username_key UNIQUE (username)
 )
@@ -329,3 +330,95 @@ ALTER FUNCTION public.single_youtubedata(uuid)
 
 select * from single_youtubedata('5dcd17e4-e2cd-4eb2-8d73-e89abff1849a');
 ----------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------update_profile(function)---------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION update_profile(
+	t_memid uuid,
+	t_username character varying,
+	t_full_name character varying,
+	t_email character varying,
+	t_phoneno character varying,
+	t_address text,
+	t_dob date,
+	t_country character varying,
+	t_pwd character varying,
+	t_photo_loc character varying,
+	t_bio text,
+	t_regdate timestamp without time zone,
+	t_status boolean,
+	t_member_level m_level,
+	t_rol character varying,
+	t_moddate timestamp without time zone,
+	t_createdate timestamp without time zone
+	)
+    RETURNS json
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+DECLARE
+ tm_cnt NUMERIC;
+ profile CHARACTER VARYING;
+ 
+BEGIN
+
+ SELECT INTO tm_cnt COUNT(t_memid) AS cnt FROM teammember WHERE memid = t_memid;
+ 
+ IF tm_cnt = 1 THEN
+ 	
+    UPDATE teammember
+	SET  
+	username = t_username, 
+	full_name = t_full_name, 
+	email = t_email, 
+	phoneno = t_phoneno, 
+	address = t_address, 
+	dob = t_dob, 
+	country = t_country, 
+	pwd = t_pwd, 
+	photo_loc = t_photo_loc, 
+	bio = t_bio, 
+	regdate = t_regdate, 
+	status = t_status, 
+	member_level = t_member_level, 
+	rol = t_rol, 
+	moddate = t_moddate, 
+	createdate = t_createdate 
+	WHERE memid = t_memid;
+
+	SELECT row_to_json(t) INTO profile 
+        FROM teammember t
+        WHERE t.memid = t_memid;
+		
+ 	RETURN profile;
+ ELSE
+ 	  RETURN '{"msg" : "member not found"}';
+ END IF;
+ 
+END;
+$BODY$;
+
+----------------------------------------------------------------------------------------------
+SELECT update_profile(
+           'e0b3fb73-d761-4caa-bd91-b0bae0b92ee4', 
+           'zzzz', 
+	   'sathish', 
+	   'yyyy@cli.in', 
+	   '7639750827', 
+	   'chennai', 
+	   '1995-03-14', 
+	   'india', 
+	   '54321', 
+           'http//', 
+	   'zzzzz', 
+	   '2024-11-15 15:30:00', 
+	   'false', 
+	   'senior', 
+	   'frontend developer', 
+	   '2024-12-04 16:18:00', 
+	   '2024-12-04 16:18:00'
+	   );
+
+select * from teammember;
+
+------------------------------------------------------------------------------------------------
