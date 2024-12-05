@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const techieRouter = require('./routes/techieRouter');
-const loginRouter = require('./routes/loginRouter');
-const appError = require('./util/appError');
+const authRouter = require('./routes/authRouter');
+const appError = require('./utils/appError');
 const app = express();
 
 app.use(bodyParser.json());
@@ -23,7 +23,13 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/v1/', loginRouter);
+app.use((req, res, next) => {
+  // req.requestTime = new Date().toISOString();
+  // console.log(req.headers);
+  next();
+});
+
+app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/techie', techieRouter);
 
 app.all('*', function (req, res, next) {
@@ -36,6 +42,10 @@ app.use((err, req, res, next) => {
 
   res.status(err.statusCode).json({
     status: err.status,
+    error: err,
     message: err.message,
+    stack: err.stack,
   });
 });
+
+module.exports = app;
