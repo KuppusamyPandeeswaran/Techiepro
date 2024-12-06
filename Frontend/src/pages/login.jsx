@@ -9,8 +9,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Login Data:", { email, password });
-    setEmail("");
-    setPassword("");
+  
 
     try {
       let response = await fetch("http://127.0.0.1:3000/api/v1/login", {
@@ -18,17 +17,27 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ 
+          userORemail: email,  
+          pwd: password        
+        }),
       });
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
+
+      let respData = await response.json();
+      console.log(respData);
+      if (respData.status==="success") {
+        
+        
         window.location.href = "/Profiles";
       } else {
         console.error("Login failed");
       }
+
     } catch (err) {
       console.log(err);
+    }finally{
+      setEmail("");
+      setPassword("");
     }
   };
 
@@ -99,9 +108,11 @@ const Login = () => {
             <button
               type="submit"
               className="w-full py-2 px-4 bg-blue-600 rounded-md text-white font-semibold hover:bg-blue-500"
-              onClick={() => {
-                window.location.href = "/Profiles";
-              }}
+              // onClick={() => {
+              //   window.location.href = "/Profiles";
+              // }}
+              onClick={handleSubmit}
+            
             >
               Sign in to your account
             </button>

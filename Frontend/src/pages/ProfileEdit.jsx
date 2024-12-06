@@ -6,7 +6,7 @@ const ProfileEdit = () => {
       <div className="pt-16 pb-8 px-8 bg-[#f0faff]">
         <h1 className="text-3xl font-semibold ">Edit Profile</h1>
       </div>
-      <div className="bg-[#f0faff] grid grid-cols-3 gap-4 px-10">
+      <div className="bg-[#f0faff] grid grid-cols-3 gap-4 px-10 max-md:grid-cols-1">
         {/* Left Column */}
         <div className="col-span-1 flex flex-col gap-4">
           {/* Profile Section */}
@@ -109,7 +109,7 @@ const ProfileEdit = () => {
         {/* Right Column */}
         <div className="bg-[#cceeff] rounded-lg shadow-lg w-full p-6 col-span-2 self-start">
           <h1 className="text-lg font-semibold mb-4">General Information</h1>
-          <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form className="grid max-sm:grid-cols-2 gap-6">
             {/* Add form fields here */}
             <div>
               <label className="block text-sm text-gray-800 mb-1">
