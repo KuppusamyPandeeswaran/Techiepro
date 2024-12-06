@@ -15,7 +15,7 @@ The base URL for all API endpoints is:
 ### 1. Login
 
 URL:
-GET /api/v1/signin
+POST /api/v1/signin
 
 Description:
 Allows a user to log in by providing username or email and password.

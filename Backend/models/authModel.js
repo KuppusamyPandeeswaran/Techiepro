@@ -1,4 +1,4 @@
-const db = require('../util/database');
+const conDB = require('./../utils/db');
 
 module.exports = class Techie {
   constructor(uuid) {
@@ -7,10 +7,12 @@ module.exports = class Techie {
 
   //Retrieve Techie information
   static techiesignin(userORemail, pwd) {
-    return db.query(`SELECT public.login('${userORemail}', '${pwd}')`);
+    return conDB.query(`SELECT public.login('${userORemail}', '${pwd}')`);
   }
-  static techiesignup(uid, uname, uemail, mobile, urole, addr, pwd) {
-    return db.query(
+  static techiesignup(uid, email, password, name) {
+    console.log(uid);
+
+    return conDB.query(
       `SELECT public.add_techie(${uid}, '${uname}', '${uemail}', '${mobile}', '${urole}', '${addr}', '${pwd}');`
     );
   }
