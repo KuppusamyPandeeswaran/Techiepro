@@ -33,7 +33,7 @@ export default function App() {
   }
 
   return (
-    <div className="bg-[#f0faff]">
+    <div>
       <Navbar />
       <Routes>
         <Route path="/" element={<Welcome />} />

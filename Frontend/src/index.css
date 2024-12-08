@@ -5,22 +5,31 @@
 @tailwind utilities;
 
 @layer components {
+  body {
+    background-color: #f0faff;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Ensures full screen coverage */
+  }
   ::selection {
     background: #00b0ff;
   }
+
   @media screen and (min-width: 800px) {
-    .navigation_checkbox,.navigation_background,.navigation_button {
+    .navigation_checkbox,
+    .navigation_background,
+    .navigation_button {
       display: none;
     }
-    
-    .navigation{
+
+    .navigation {
       margin: 25px 25px 10px 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-   
-    .navigation_list{
+
+    .navigation_list {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -28,13 +37,13 @@
       list-style: none;
     }
   }
-  
-  
-  
+
   @media screen and (max-width: 800px) {
-    .navigation_checkbox,.login-btn {
+    .navigation_checkbox,
+    .login-btn {
       display: none;
     }
+
     .navigation_button {
       background-color: #fff;
       height: 4rem;
@@ -46,6 +55,7 @@
       z-index: 2000;
       box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1);
     }
+
     .navigation_background {
       height: 4rem;
       width: 4rem;
@@ -58,6 +68,7 @@
       transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
       cursor: pointer;
     }
+
     .navigation_nav {
       height: 100vh;
       position: fixed;
@@ -65,27 +76,38 @@
       left: 0;
       z-index: 1500;
       opacity: 0;
-      width: 0;
+      width: 80%;
+      pointer-events: none; /* Prevent clicking when the nav is hidden */
       transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     }
+
+    .navigation_nav.visible {
+      opacity: 1;
+      width: 100%;
+      pointer-events: auto; /* Allow clicking when the nav is visible */
+    }
+
     .navigation_list {
       position: absolute;
-      top: 50%;
+      top: 45%;
       left: 50%;
       transform: translate(-50%, -50%);
       list-style: none;
       text-align: center;
       width: 100%;
+      font-weight: bold;
     }
+
     .navigation_item {
-      margin: 1rem;
+      margin: 0.8rem;
     }
+
     .navigation_link,
     .navigation_link:link,
     .navigation_link:visited {
-      font-size: 3rem;
+      font-size: 2rem;
       font-weight: 300;
-      padding: 1rem 2rem;
+      padding: 0.8rem 1.5rem;
       color: #fff;
       text-decoration: none;
       text-transform: uppercase;
@@ -95,23 +117,28 @@
         transparent 50%,
         #fff 50%
       );
-      background-size: 224%;
+      background-size: 230%;
       transition: all 0.4s;
       display: inline-block;
     }
+
     .navigation_link:hover,
     .navigation_link:active {
       background-position: 100%;
       color: #00b0ff;
       transform: translateX(1rem);
     }
+
     .navigation_checkbox:checked ~ .navigation_background {
       transform: scale(80);
     }
+
     .navigation_checkbox:checked ~ .navigation_nav {
       opacity: 1;
       width: 100%;
+      pointer-events: auto; /* Allow clicking */
     }
+
     .navigation_icon,
     .navigation_icon::before,
     .navigation_icon::after {
@@ -123,6 +150,7 @@
       left: 13.5px;
       top: 31px;
     }
+
     .navigation_icon::before,
     .navigation_icon::after {
       content: "";
@@ -130,30 +158,35 @@
       left: 0;
       transition: all 0.2s;
     }
+
     .navigation_icon::before {
       top: -0.8rem;
     }
+
     .navigation_icon::after {
       top: 0.8rem;
     }
+
     .navigation_button:hover .navigation_icon::before {
       top: -1rem;
     }
+
     .navigation_button:hover .navigation_icon::after {
       top: 1rem;
     }
+
     .navigation_checkbox:checked + .navigation_button .navigation_icon {
       background-color: transparent;
     }
+
     .navigation_checkbox:checked + .navigation_button .navigation_icon::before {
       top: 0;
       transform: rotate(135deg);
     }
+
     .navigation_checkbox:checked + .navigation_button .navigation_icon::after {
       top: 0;
       transform: rotate(-135deg);
     }
-    
   }
-  
 }
