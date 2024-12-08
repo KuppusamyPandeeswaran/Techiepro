@@ -13,6 +13,7 @@ import { initialVideos } from "./VideoData";
 import Resources from "./Pages/Resources";
 import AddVideo from "./Pages/AddVideo";
 import VideoDetails from "./Pages/VideoDetails";
+import Learning from "./Pages/Learning";
 
 export default function App() {
   const [techies, setTechies] = useState([]);
@@ -62,6 +63,7 @@ export default function App() {
           path="/VideoDetails/:videoId"
           element={<VideoDetails videos={videos} />}
         />
+        <Route path="/Learning" element={<Learning />} />
       </Routes>
     </div>
   );
