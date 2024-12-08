@@ -1,21 +1,14 @@
-import React, { useState, useEffect } from "react";
-import data from "./data.json";
-
-const Categories = Object.keys(data);
+import React, { useState } from "react";
+import data from "./data.json"; // Assuming data.json contains the categories
 
 const Learning = () => {
-  const [selectedCategory, setSelectedCategory] = useState(Categories[0]);
-  const [selectedSyntax, setSelectedSyntax] = useState(data[Categories[0]][0]);
-
-  useEffect(() => {
-    // Update syntax when the category changes
-    if (selectedCategory) {
-      setSelectedSyntax(data[selectedCategory][0]);
-    }
-  }, [selectedCategory]);
+  const categories = Object.keys(data);
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]); // First category selected by default
+  const [selectedSyntax, setSelectedSyntax] = useState(data[categories[0]][0]); // First syntax of the first category
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
+    setSelectedSyntax(data[category][0]); // Default to the first syntax
   };
 
   const handleSyntaxClick = (syntax) => {
@@ -23,57 +16,54 @@ const Learning = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100 mt-20">
-      {/* Top: Categories */}
-      <div className="flex bg-[#f0faff] p-4 shadow">
-        {Categories.map((category) => (
+    <div className="flex flex-col min-h-screen bg-gray-100 mt-20 max-sm:mt-0">
+      {/* Categories Section */}
+      <div className="bg-[#f0faff] text-white flex flex-wrap justify-center items-center gap-4 p-4">
+        {categories.map((category) => (
           <button
             key={category}
-            className={`mx-2 px-4 py-2 rounded ${
-              selectedCategory === category
-                ? "bg-[#00b0ff] text-white"
-                : "bg-gray-300"
-            } hover:bg-[#00b0ff] hover:text-white`}
             onClick={() => handleCategoryClick(category)}
+            className={`py-2 px-4 rounded-md text-sm sm:text-base font-semibold transition ${
+              selectedCategory === category
+                ? "bg-[#00b0ff] hover:bg-[#009ee6]"
+                : "bg-gray-500 hover:bg-[#00b0ff]"
+            }`}
           >
             {category.charAt(0).toUpperCase() + category.slice(1)}
           </button>
         ))}
       </div>
 
-      <div className="flex flex-1">
-        {/* Left Panel: Syntax List */}
-        <div className="w-1/4 bg-[#e6f7ff] p-4">
-          <h3 className="text-lg font-semibold mb-4">Syntax</h3>
-          <ul>
-            {data[selectedCategory]?.map((item, index) => (
+      {/* Content Section */}
+      <div className="flex flex-1 flex-col lg:flex-row">
+        {/* Syntax Panel */}
+        <div className="bg-[#e6f7ff] p-4 w-full lg:w-1/4 border-r border-gray-300">
+          <h2 className="text-lg font-bold mb-4">
+            {selectedCategory.charAt(0).toUpperCase() +
+              selectedCategory.slice(1)}{" "}
+            Syntax
+          </h2>
+          <ul className="space-y-2">
+            {data[selectedCategory].map((syntax, index) => (
               <li
                 key={index}
-                className={`cursor-pointer py-2 px-4 mb-2 rounded hover:bg-[#00b0ff] hover:text-white ${
-                  selectedSyntax?.title === item.title
+                onClick={() => handleSyntaxClick(syntax)}
+                className={`cursor-pointer py-2 px-4 rounded-md border transition ${
+                  selectedSyntax?.title === syntax.title
                     ? "bg-[#00b0ff] text-white"
-                    : "bg-gray-200"
+                    : "bg-white hover:bg-gray-200"
                 }`}
-                onClick={() => handleSyntaxClick(item)}
               >
-                {item.title}
+                {syntax.title}
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Right Panel: Content */}
-        <div className="flex-1 bg-[#f0faff] p-4">
-          {selectedSyntax ? (
-            <>
-              <h2 className="text-2xl font-bold mb-4">
-                {selectedSyntax.title}
-              </h2>
-              <p>{selectedSyntax.content}</p>
-            </>
-          ) : (
-            <p className="text-gray-500">Select a syntax to see its content.</p>
-          )}
+        {/* Content Panel */}
+        <div className="p-4 flex-1">
+          <h2 className="text-xl font-bold mb-4">{selectedSyntax?.title}</h2>
+          <p className="text-gray-700">{selectedSyntax?.content}</p>
         </div>
       </div>
     </div>
