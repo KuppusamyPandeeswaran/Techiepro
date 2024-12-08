@@ -126,7 +126,7 @@ const Register = () => {
           <img
             src="/register.png"
             alt="Decorative Illustration"
-            className="min-w-full"
+            style={{ width: "500px", height: "450px" }}
           />
         </div>
       </div>
