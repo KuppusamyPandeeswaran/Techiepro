@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import data from "./data.json"; // Assuming data.json contains the categories
+import data from "./data.json";
 
 const Learning = () => {
   const categories = Object.keys(data);
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]); // First category selected by default
-  const [selectedSyntax, setSelectedSyntax] = useState(data[categories[0]][0]); // First syntax of the first category
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [selectedSyntax, setSelectedSyntax] = useState(data[categories[0]][0]);
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
