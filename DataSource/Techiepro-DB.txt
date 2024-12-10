@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS public.teammember
     memid uuid NOT NULL,
     username character varying COLLATE pg_catalog."default",
     full_name character varying COLLATE pg_catalog."default",
-    email character varying COLLATE pg_catalog."default" NOT NULL,
-    phoneno character varying COLLATE pg_catalog."default" NOT NULL,
+    email character varying COLLATE pg_catalog."default",
+    phoneno character varying COLLATE pg_catalog."default",
     address text COLLATE pg_catalog."default",
     dob date,
     country character varying COLLATE pg_catalog."default",
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS public.teammember
     rol character varying COLLATE pg_catalog."default",
     moddate timestamp without time zone,
     createdate timestamp without time zone,
-    CONSTRAINT teammember_pkey PRIMARY KEY (memid, email, phoneno),
+    CONSTRAINT teammember_pkey PRIMARY KEY (memid),
     CONSTRAINT teammember_email_key UNIQUE (email),
     CONSTRAINT teammember_memid_key UNIQUE (memid),
     CONSTRAINT teammember_username_key UNIQUE (username)
@@ -422,3 +422,43 @@ SELECT update_profile(
 select * from teammember;
 
 ------------------------------------------------------------------------------------------------
+---------------------------------------signup(function)-----------------------------------------
+
+CREATE OR REPLACE FUNCTION public.signup(
+	t_memid uuid,
+	t_full_name character varying,
+	t_username character varying,
+	t_email character varying,
+	t_pwd character varying,
+	t_createdate timestamp without time zone)
+    RETURNS json
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+DECLARE
+    profile json;
+BEGIN
+    INSERT INTO teammember (memid, full_name, username, email, pwd, createdate)
+    VALUES (t_memid, t_full_name, t_username, t_email, t_pwd, t_createdate)
+	RETURNING row_to_json(teammember.*) INTO profile;
+
+    INSERT INTO useractivity (username, email)
+    VALUES (t_username, t_email);
+    
+    RETURN profile;
+END;
+$BODY$;
+
+
+-----------------------------------------------------------------------------------------------------
+SELECT public.signup(
+        '40f7e2e1-2d64-41df-8413-baef5257fbfb',
+	'ranjith',
+	'ranjith.s',
+	'ranjith.s@cli.in',
+	'12345',
+	'2024-12-06 10:50:00'
+)
+
+--------------------------------------------------------------------------------------------------------
