@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS public.teammember
     moddate timestamp without time zone,
     createdate timestamp without time zone,
     CONSTRAINT teammember_pkey PRIMARY KEY (memid, email, phoneno),
+    CONSTRAINT teammember_email_key UNIQUE (email),
     CONSTRAINT teammember_memid_key UNIQUE (memid),
     CONSTRAINT teammember_username_key UNIQUE (username)
 )
@@ -36,7 +37,7 @@ ALTER TABLE IF EXISTS public.teammember
 INSERT INTO public.teammember(
 	memid, username, full_name, email, phoneno, address, dob, country, pwd, photo_loc, bio, regdate, status, member_level, rol, moddate, createdate)
 	VALUES ('5dcd17e4-e2cd-4eb2-8d73-e89abff1849a', 'sathi', 'sathish', 'sathish.s@cli.in', '7639750827', 'chennai', '1995-03-14', 'india', '12345', 
-       'http//', 'xxxxxx', '2024-11-15 15:30:00', 'true', 'junior', 'developer', '2024-11-15 15:30:00', '2024-11-15 15:30:00');
+       'http//', 'xxxxxx', x);
 -----------------------------------------------------------------------
 ---------------------------------skillset----------------------------------------
 
@@ -77,12 +78,8 @@ CREATE TABLE IF NOT EXISTS public.useractivity
     account_locked boolean,
     device_last_login character varying COLLATE pg_catalog."default",
     browser_last_login character varying COLLATE pg_catalog."default",
-    username_email character varying COLLATE pg_catalog."default",
-    memid uuid,
-    CONSTRAINT useractivity_memid_fkey FOREIGN KEY (memid)
-        REFERENCES public.teammember (memid) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+    username character varying COLLATE pg_catalog."default",
+    email character varying COLLATE pg_catalog."default"
 )
 
 TABLESPACE pg_default;
@@ -92,8 +89,8 @@ ALTER TABLE IF EXISTS public.useractivity
 ---------------------------------------------------------------------------------
 
 INSERT INTO public.useractivity(
-	last_login, login_attempts, account_locked, device_last_login, browser_last_login, username_email, memid)
-	VALUES ('2024-11-16 10:30:00', 2, false, 'android', 'xxxx', 'sathi', '5dcd17e4-e2cd-4eb2-8d73-e89abff1849a');
+	last_login, login_attempts, account_locked, device_last_login, browser_last_login, username, email)
+	VALUES ('2024-11-16 10:30:00', 2, false, 'android', 'xxxx', 'sathi', 'sathish.s@cli.in');
 
 -----------------------------------------------------------------------------------------------------
 ----------------------------------contactus-----------------------------------------------------------
@@ -110,6 +107,23 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.contactus
     OWNER to postgres;
 ------------------------------------------------------------------------------------------------------
+------------------------------------------insert_contactus-----------------------------------------------------
+
+CREATE OR REPLACE FUNCTION insert_contactus(
+    c_fullname VARCHAR,
+    c_email VARCHAR,
+    c_yourmessage TEXT
+)
+RETURNS VOID AS $$
+BEGIN
+    INSERT INTO contactus (fullname, email, yourmessage)
+    VALUES (c_fullname, c_email, c_yourmessage);
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insert_contactus('sathish', 'sathish.s@cli.in', 'test message.');
+
+----------------------------------------------------------------------------------------------------------------
 ----------------------------------all_profile---------------------------------------------------------
 
 create or replace function all_profile()
@@ -158,68 +172,6 @@ language plpgsql;
 select * from single_profile('5dcd17e4-e2cd-4eb2-8d73-e89abff1849a');
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------login--(auth_user_or_email character varying, auth_pwd character varying)------------------------------
-
-CREATE OR REPLACE FUNCTION login( 
-    auth_user_or_email character varying, 
-    auth_pwd character varying)
-RETURNS json
-AS
-$$
-DECLARE
-    tm_cnt NUMERIC;
-    msg VARCHAR(1000);
-BEGIN
-    SELECT INTO tm_cnt 
-        COUNT(*) 
-    FROM teammember 
-    WHERE 
-        pwd = auth_pwd 
-        AND (username = auth_user_or_email OR email = lower(auth_user_or_email));
-
-    IF tm_cnt = 1 THEN
-        msg = (
-            SELECT row_to_json(t)
-            FROM (
-                SELECT 
-                    memid, username, full_name, email, phoneno, address, 
-                    dob, country, pwd, photo_loc, bio, regdate, status, 
-                    member_level, rol, moddate, createdate 
-                FROM teammember 
-                WHERE 
-                    pwd = auth_pwd 
-                    AND (username = auth_user_or_email OR email = lower(auth_user_or_email))
-            ) t
-        );
-        RETURN concat('{"status":{"msg":"live","profile":', msg, '}}');
-    ELSE
-        RETURN '{"msg":"not allowed"}';
-    END IF;
-END;
-$$
-LANGUAGE plpgsql;
-
-SELECT * FROM login('sathish.s@cli.in', '12345');
-SELECT * FROM login('sathi', '12345');
-
--------------------------------------------------------------------------------------------------------------
-------------------------------------------insert_contactus-----------------------------------------------------
-
-CREATE OR REPLACE FUNCTION insert_contactus(
-    c_fullname VARCHAR,
-    c_email VARCHAR,
-    c_yourmessage TEXT
-)
-RETURNS VOID AS $$
-BEGIN
-    INSERT INTO contactus (fullname, email, yourmessage)
-    VALUES (c_fullname, c_email, c_yourmessage);
-END;
-$$ LANGUAGE plpgsql;
-
-SELECT insert_contactus('sathish', 'sathish.s@cli.in', 'test message.');
-
-================================================================================================================
 ------------------------------login(if log in failed add count in login_attempts)--------------------------------
 
 CREATE OR REPLACE FUNCTION login(
@@ -233,6 +185,7 @@ DECLARE
     tm_cnt NUMERIC;
     msg VARCHAR(1000);
 BEGIN
+
     SELECT INTO tm_cnt
         COUNT(*)
     FROM teammember
@@ -241,12 +194,12 @@ BEGIN
         AND (username = auth_user_or_email OR email = LOWER(auth_user_or_email));
     
     IF tm_cnt = 1 THEN
+
         msg = (
             SELECT row_to_json(t)
             FROM (
                 SELECT
-                    memid, username, full_name, email, phoneno, address, dob, country, pwd, photo_loc, bio, 
-                     regdate, status, member_level, rol, moddate, createdate
+                    memid, username, full_name, email, phoneno, address, dob, country, pwd, photo_loc, bio, regdate, status, member_level, rol, moddate, createdate
                 FROM teammember
                 WHERE
                     pwd = auth_pwd
@@ -255,18 +208,10 @@ BEGIN
         );
         RETURN CONCAT('{"status":{"msg":"live","profile":', msg, '}}');
     ELSE
+
         UPDATE useractivity
         SET login_attempts = login_attempts + 1
-        WHERE username_email = auth_user_or_email;
-        
-        IF NOT FOUND THEN
-            INSERT INTO useractivity (username_email, login_attempts)
-            VALUES (
-                auth_user_or_email,
-                CASE WHEN POSITION('@' IN auth_user_or_email) > 0 THEN LOWER(auth_user_or_email) ELSE NULL END,
-                1
-            );
-        END IF;
+        WHERE username = auth_user_or_email or email = auth_user_or_email;
 
         RETURN '{"msg":"not allowed"}';
     END IF;
@@ -274,7 +219,206 @@ END;
 $$
 LANGUAGE plpgsql;
 
+SELECT * FROM login('sathish.s@cli.in', '12345');
 
-SELECT * FROM login('sathi', '1234');
+SELECT * FROM login('sathi', '12345');
 
-select * from useractivity;
+select *  from useractivity;
+
+-------------------------------------------------------------------------------------------------------------
+------------------------------------------youtubedata--------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS public.youtubedata
+(
+    title character varying(50) COLLATE pg_catalog."default",
+    url character varying(50) COLLATE pg_catalog."default",
+    shortnote character varying(250) COLLATE pg_catalog."default",
+    category character varying(50) COLLATE pg_catalog."default",
+    memid uuid,
+    CONSTRAINT youtubedata_memid_fkey FOREIGN KEY (memid)
+        REFERENCES public.teammember (memid) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.youtubedata
+    OWNER to postgres;
+
+----------------------------------------------------------------------------------------------------------------------
+--------------------------------------------insert_youtubedata--------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION public.insert_youtubedata(
+	y_title character varying,
+	y_url character varying,
+	y_shortnote character varying,
+	y_category character varying,
+	y_memid uuid)
+    RETURNS json
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+DECLARE
+    youtube_data json;
+BEGIN
+    INSERT INTO youtubedata (title, url, shortnote, category, memid)
+    VALUES (y_title, y_url, y_shortnote, y_category, y_memid)
+    RETURNING row_to_json(youtubedata.*) INTO youtube_data;
+    
+    RETURN youtube_data;
+END;
+$BODY$;
+
+ALTER FUNCTION public.insert_youtubedata(character varying, character varying, character varying, character varying, uuid)
+    OWNER TO postgres;
+
+--------------------------------------------------------------------------------------------------------------------
+------------------------------------------all_yotubedata------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION public.all_youtubedata(
+	)
+    RETURNS json
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+declare
+all_youtubedata json;
+begin
+select json_agg(row_to_json(t)) into all_youtubedata from(select * from youtubedata)t;
+return all_youtubedata;
+end;
+$BODY$;
+
+ALTER FUNCTION public.all_youtubedata()
+    OWNER TO postgres;
+
+
+select * from all_youtubedata();
+-------------------------------------------------------------------------------------------------------------------------
+-----------------------------------single_youtubedata--------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION public.single_youtubedata(
+	t_memid uuid)
+    RETURNS json
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+DECLARE
+ tm_cnt NUMERIC;
+ youtube_data CHARACTER VARYING;
+ 
+BEGIN
+
+ SELECT INTO tm_cnt COUNT(t_memid) AS cnt FROM teammember WHERE memid = t_memid;
+ 
+ IF tm_cnt = 1 THEN
+ 	youtube_data = (select row_to_json(t) from (select title, url, shortnote, category, memid from youtubedata WHERE memid = t_memid) t);
+ 	RETURN concat('{"status":{"youtube_data":',youtube_data,'}}');
+ ELSE
+ 	  RETURN '{"msg" : "no more data"}';
+ END IF;
+ 
+END;
+$BODY$;
+
+ALTER FUNCTION public.single_youtubedata(uuid)
+    OWNER TO postgres;
+
+select * from single_youtubedata('5dcd17e4-e2cd-4eb2-8d73-e89abff1849a');
+----------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------update_profile(function)---------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION update_profile(
+	t_memid uuid,
+	t_username character varying,
+	t_full_name character varying,
+	t_email character varying,
+	t_phoneno character varying,
+	t_address text,
+	t_dob date,
+	t_country character varying,
+	t_pwd character varying,
+	t_photo_loc character varying,
+	t_bio text,
+	t_regdate timestamp without time zone,
+	t_status boolean,
+	t_member_level m_level,
+	t_rol character varying,
+	t_moddate timestamp without time zone,
+	t_createdate timestamp without time zone
+	)
+    RETURNS json
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+DECLARE
+ tm_cnt NUMERIC;
+ profile CHARACTER VARYING;
+ 
+BEGIN
+
+ SELECT INTO tm_cnt COUNT(t_memid) AS cnt FROM teammember WHERE memid = t_memid;
+ 
+ IF tm_cnt = 1 THEN
+ 	
+    UPDATE teammember
+	SET  
+	username = t_username, 
+	full_name = t_full_name, 
+	email = t_email, 
+	phoneno = t_phoneno, 
+	address = t_address, 
+	dob = t_dob, 
+	country = t_country, 
+	pwd = t_pwd, 
+	photo_loc = t_photo_loc, 
+	bio = t_bio, 
+	regdate = t_regdate, 
+	status = t_status, 
+	member_level = t_member_level, 
+	rol = t_rol, 
+	moddate = t_moddate, 
+	createdate = t_createdate 
+	WHERE memid = t_memid;
+
+	SELECT row_to_json(t) INTO profile 
+        FROM teammember t
+        WHERE t.memid = t_memid;
+		
+ 	RETURN profile;
+ ELSE
+ 	  RETURN '{"msg" : "member not found"}';
+ END IF;
+ 
+END;
+$BODY$;
+
+----------------------------------------------------------------------------------------------
+SELECT update_profile(
+           'e0b3fb73-d761-4caa-bd91-b0bae0b92ee4', 
+           'zzzz', 
+	   'sathish', 
+	   'yyyy@cli.in', 
+	   '7639750827', 
+	   'chennai', 
+	   '1995-03-14', 
+	   'india', 
+	   '54321', 
+           'http//', 
+	   'zzzzz', 
+	   '2024-11-15 15:30:00', 
+	   'false', 
+	   'senior', 
+	   'frontend developer', 
+	   '2024-12-04 16:18:00', 
+	   '2024-12-04 16:18:00'
+	   );
+
+select * from teammember;
+
+------------------------------------------------------------------------------------------------

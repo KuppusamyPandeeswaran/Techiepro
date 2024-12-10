@@ -1,0 +1,79 @@
+[
+    {
+        "id": 1,
+        "photo": "SK.jpg",
+        "username": "SK",
+        "phone": "1234567891",
+        "email": "krishnan@cxx.in"
+    },
+    {
+        "id": 2,
+        "photo": "ganesh.jpg",
+        "username": "Ganesh",
+        "phone": "1234567891",
+        "email": "ganesh.m@cxx.in"
+    },
+    {
+        "id": 3,
+        "photo": "prakash.jpg",
+        "username": "Prakash",
+        "phone": "1234567891",
+        "email": "krishnan@cxx.in"
+    },
+    {
+        "id": 4,
+        "photo": "harish.jpg",
+        "username": "Harish",
+        "phone": "1234567891",
+        "email": "harish.s@cxx.in"
+    },
+    {
+        "id": 5,
+        "photo": "dinesh.jpg",
+        "username": "Dinesh",
+        "phone": "1234567891",
+        "email": "dinesh.s@cxx.in"
+    },
+    {
+        "id": 6,
+        "photo": "ranjith.jpg",
+        "username": "Ranjith",
+        "phone": "1234567891",
+        "email": "ranjith.s@cxx.in"
+    },
+    {
+        "id": 7,
+        "photo": "sathish.jpg",
+        "username": "Sathish",
+        "phone": "1234567891",
+        "email": "sathish.s@cxx.in"
+    },
+    {
+        "id": 8,
+        "photo": "parthipan.jpg",
+        "username": "Parthipan",
+        "phone": "1234567891",
+        "email": "parthipan.s@cxx.in"
+    },
+    {
+        "id": 9,
+        "photo": "lokesh.jpg",
+        "username": "Lokesh",
+        "phone": "1234567891",
+        "email": "lokesh.s@cxx.in"
+    },
+    {
+        "id": 10,
+        "photo": "karuna.jpg",
+        "username": "Karuna",
+        "phone": "1234567891",
+        "email": "karunamoorthy.s@cxx.in"
+    },
+    {
+        "id": 11,
+        "photo": "pandeeswaran.jpg",
+        "username": "Pandeeswaran",
+        "phone": "1234567891",
+        "email": "pandees@cxx.in"
+    }
+]
