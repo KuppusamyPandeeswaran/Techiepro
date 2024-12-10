@@ -29,7 +29,7 @@ const Resources = ({ videos }) => {
 
   return (
     <div className="container mx-auto px-4 pb-8 pt-20 mt-12">
-      <div className="mb-6 flex justify-center items-center">
+      <div className="mb-6 flex justify-center items-center flex-wrap gap-6">
         <input
           type="text"
           value={searchQuery}

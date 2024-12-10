@@ -37,7 +37,7 @@ ALTER TABLE IF EXISTS public.teammember
 INSERT INTO public.teammember(
 	memid, username, full_name, email, phoneno, address, dob, country, pwd, photo_loc, bio, regdate, status, member_level, rol, moddate, createdate)
 	VALUES ('5dcd17e4-e2cd-4eb2-8d73-e89abff1849a', 'sathi', 'sathish', 'sathish.s@cli.in', '7639750827', 'chennai', '1995-03-14', 'india', '12345', 
-       'http//', 'xxxxxx', '2024-11-15 15:30:00', 'true', 'junior', 'developer', '2024-11-15 15:30:00', '2024-11-15 15:30:00');
+       'http//', 'xxxxxx', x);
 -----------------------------------------------------------------------
 ---------------------------------skillset----------------------------------------
 

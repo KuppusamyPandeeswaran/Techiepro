@@ -15,7 +15,7 @@ const Register = () => {
 
   return (
     <div className="bg-[#f0faff]">
-      <div className="flex min-h-screen bg-[#f0faff]  px-20 pt-20">
+      <div className="flex min-h-screen bg-[#f0faff]  px-5 pt-20 max-w-4xl mx-auto">
         {/* Left Section */}
         <div className="w-full max-w-md mx-auto flex flex-col justify-center p-8 bg-[#f0faff] ">
           {/* Logo */}
@@ -84,7 +84,7 @@ const Register = () => {
             </div>
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-blue-600 rounded-md text-white font-semibold hover:bg-blue-500"
+              className="w-full py-2 px-4 bg-[#00b0ff] rounded-md text-white font-semibold hover:bg-[#007bb3] hover:transition-colors duration-300"
               onClick={() => {
                 window.location.href = "/ProfileCards";
               }}
@@ -124,9 +124,9 @@ const Register = () => {
         {/* Right Section */}
         <div className="hidden lg:flex flex-1 items-center justify-center">
           <img
-            src="/login.png"
+            src="/register.png"
             alt="Decorative Illustration"
-            className="w-3/4"
+            style={{ width: "500px", height: "450px" }}
           />
         </div>
       </div>

@@ -1,0 +1,114 @@
+{
+    "html": [
+        {
+            "title": "HTML Elements",
+            "content": "HTML Elements are the building blocks of an HTML document."
+        },
+        {
+            "title": "Forms",
+            "content": "HTML Forms allow users to enter data for submission."
+        },
+        {
+            "title": "Tables",
+            "content": "HTML Tables are used to organize data in a tabular format."
+        }
+    ],
+    "css": [
+        {
+            "title": "Selectors",
+            "content": "CSS Selectors are used to select and style elements."
+        },
+        {
+            "title": "Flexbox",
+            "content": "Flexbox is a layout model that allows elements to align and distribute space dynamically."
+        },
+        {
+            "title": "Grid",
+            "content": "CSS Grid layout allows you to create complex layouts with rows and columns."
+        }
+    ],
+    "javascript": [
+        {
+            "title": "Variables",
+            "content": "JavaScript variables are used to store data."
+        },
+        {
+            "title": "Functions",
+            "content": "Functions are reusable blocks of code in JavaScript."
+        },
+        {
+            "title": "Loops",
+            "content": "Loops allow you to execute a block of code multiple times."
+        }
+    ],
+    "react": [
+        {
+            "title": "JSX",
+            "content": "JSX allows writing HTML-like syntax in JavaScript."
+        },
+        {
+            "title": "State",
+            "content": "State in React allows you to manage and track data changes within components."
+        },
+        {
+            "title": "Props",
+            "content": "Props are used to pass data from one component to another in React."
+        }
+    ],
+    "angular": [
+        {
+            "title": "Directives",
+            "content": "Directives are markers on a DOM element that attach behavior to that element."
+        },
+        {
+            "title": "Components",
+            "content": "Components are the building blocks of an Angular application."
+        },
+        {
+            "title": "Services",
+            "content": "Services in Angular are used to share data and logic across components."
+        }
+    ],
+    "nodejs": [
+        {
+            "title": "HTTP Module",
+            "content": "Node.js HTTP module allows to create a web server."
+        },
+        {
+            "title": "File System",
+            "content": "Node.js File System module allows interaction with the file system."
+        },
+        {
+            "title": "Events",
+            "content": "Events in Node.js are signals that indicate something has happened in the application."
+        }
+    ],
+    "bootstrap": [
+        {
+            "title": "Grid System",
+            "content": "Bootstrap's Grid System allows you to create responsive layouts easily."
+        },
+        {
+            "title": "Utilities",
+            "content": "Bootstrap Utilities are helper classes for styling elements quickly."
+        },
+        {
+            "title": "Components",
+            "content": "Bootstrap Components like modals, buttons, and navbars speed up development."
+        }
+    ],
+    "tailwind": [
+        {
+            "title": "Utility-First",
+            "content": "Tailwind CSS is a utility-first CSS framework for rapidly building custom designs."
+        },
+        {
+            "title": "Responsive Design",
+            "content": "Tailwind's responsive design utilities make it easy to build responsive layouts."
+        },
+        {
+            "title": "Custom Themes",
+            "content": "Tailwind allows custom theming using configuration files."
+        }
+    ]
+}
