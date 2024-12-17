@@ -21,13 +21,31 @@ export default function ProfileView({ selectedId }) {
 
   const getSingleTechie = async () => {
     try {
-      const res = await fetch(`http://127.0.0.1:3000/api/v1/techie/${userid}`);
+      const token = localStorage.getItem("authToken");
+      console.log(`This line is from Profile view ${token}`);
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+  
+      const res = await fetch(`http://127.0.0.1:3000/api/v1/techie/${userid}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!res.ok) {
+        throw new Error(`Failed to fetch: ${res.status}`);
+      }
+  
       const data = await res.json();
       setSingleTechie(data.data.user.profile);
     } catch (err) {
-      console.log(err);
+      console.error("Error fetching single techie:", err);
     }
   };
+  
 
   useEffect(() => {
     getSingleTechie();

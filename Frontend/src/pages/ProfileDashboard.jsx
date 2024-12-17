@@ -11,7 +11,7 @@ export default function ProfileDashboard({
   const getallTechies = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      console.log(token);
+      console.log(`This line is from Profile Dashboard ${token}`);
       if (!token) {
         console.error("No token found");
         return;
