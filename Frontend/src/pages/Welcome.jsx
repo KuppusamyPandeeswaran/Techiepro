@@ -22,7 +22,7 @@ export default function Welcome() {
                 Get started
               </a>
               <a
-                href="/About"
+                
                 className="hover:text-[#00b0ff] font-semibold"
                 onClick={() => {
                   window.location.href = "/About";
@@ -37,4 +37,3 @@ export default function Welcome() {
     </div>
   );
 }
-

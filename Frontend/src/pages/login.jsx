@@ -1,33 +1,44 @@
 import React, { useState } from "react";
 import { FaGithub } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage("");
     console.log("Login Data:", { email, password });
 
     try {
-      let response = await fetch("http://127.0.0.1:3000/api/v1/login", {
+      // const token = localStorage.getItem("authToken");
+      let response = await fetch("http://127.0.0.1:3000/api/v1/auth/login", {
+
         method: "POST",
         headers: {
+          
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           userORemail: email,
-          pwd: password,
+          password: password,
         }),
+        
       });
+      console.log(response);
 
       let respData = await response.json();
       console.log(respData);
       if (respData.status === "success") {
-        window.location.href = "/Profiles";
+        localStorage.setItem("authToken", respData.token);
+        navigate("/Profiles");
       } else {
-        console.error("Login failed");
+        setErrorMessage("Invalid Credentials");
       }
     } catch (err) {
       console.log(err);
@@ -57,7 +68,9 @@ const Login = () => {
               Sign up.
             </a>
           </p>
-          <form className="space-y-4" onSubmit={handleSubmit}>
+          {errorMessage && <p className="text-red-500 text-sm mb-4">{errorMessage}</p>}
+        
+          <form className="space-y-4">
             <div>
               <label
                 className="block text-sm font-medium text-gray-900"

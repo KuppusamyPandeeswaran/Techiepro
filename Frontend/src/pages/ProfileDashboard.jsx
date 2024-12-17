@@ -7,13 +7,30 @@ export default function ProfileDashboard({
   handleSelectedId,
 }) {
   const navigate = useNavigate();
+
   const getallTechies = async () => {
     try {
-      const res = await fetch(`http://127.0.0.1:3000/api/v1/techie`);
+      const token = localStorage.getItem("authToken");
+      console.log(token);
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+      const res = await fetch(`http://127.0.0.1:3000/api/v1/techie`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to fetch: ${res.status}`);
+      }
+
       const data = await res.json();
       handleTechies(data.data.users);
     } catch (err) {
-      console.log(err);
+      console.error("Error fetching techies:", err);
     }
   };
 
@@ -23,16 +40,16 @@ export default function ProfileDashboard({
 
   return (
     <>
-      <div className=" pt-24">
-        <div className="flex flex-col justify-center font-inter px-40 ">
+      <div className="pt-24">
+        <div className="flex flex-col justify-center font-inter px-40">
           <h1 className="text-6xl font-semibold mb-5">Our team</h1>
-          <p className="">
+          <p>
             We’re a dynamic group of individuals who are passionate about what
             we do <br /> and dedicated to delivering the best results for our
             clients.
           </p>
         </div>
-        <div className="px-20 pb-20 gap-6 grid grid-cols-3 ">
+        <div className="px-20 pb-20 gap-6 grid grid-cols-3">
           {techies.map((techie, index) => (
             <div
               key={techie.memid}
