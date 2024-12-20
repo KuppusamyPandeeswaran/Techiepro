@@ -5,7 +5,9 @@ import { FaGithub } from "react-icons/fa";
 import { FaLink } from "react-icons/fa";
 import { useParams, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
+import profileSkill from "./profile.json";
 
+console.log(profileSkill);
 export default function ProfileView({ selectedId }) {
   const [singleTechie, setSingleTechie] = useState(null);
   const [userid, setUserId] = useState(null);
@@ -27,25 +29,24 @@ export default function ProfileView({ selectedId }) {
         console.error("No token found");
         return;
       }
-  
+
       const res = await fetch(`http://127.0.0.1:3000/api/v1/techie/${userid}`, {
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
-  
+
       if (!res.ok) {
         throw new Error(`Failed to fetch: ${res.status}`);
       }
-  
+
       const data = await res.json();
       setSingleTechie(data.data.user.profile);
     } catch (err) {
       console.error("Error fetching single techie:", err);
     }
   };
-  
 
   useEffect(() => {
     getSingleTechie();
@@ -57,7 +58,7 @@ export default function ProfileView({ selectedId }) {
 
   return (
     <>
-      <div className="bg-[#f0faff]">
+      <div className="bg-[#f0faff] mt-10">
         <div className="pt-16 pb-8 px-8 ">
           <h1 className="text-3xl font-semibold">Profile</h1>
           {/* <a href="" className="text-xl ">
@@ -154,16 +155,19 @@ export default function ProfileView({ selectedId }) {
               </div>
             </div>
             <h1 className="text-lg font-bold mb-4 mt-8">Skills</h1>
+
             <div>
-              <div className="skill-list flex flex-wrap gap-2 ">
-                {/* {userdata.skills.map((skill, index) => (
-                  <p
-                    className=" border-2 border-[#00b0ff] rounded-lg py-1 px-2 text-sm hover:text-white hover:bg-[#00b0ff] transition-colors"
-                    key={index}
-                  >
-                    {skill}
-                  </p>
-                ))} */}
+              <div>
+                <div className="skill-list flex flex-wrap gap-2">
+                  {profileSkill[1].skills.map((skill, index) => (
+                    <p
+                      className="border-2 border-[#00b0ff] rounded-lg py-1 px-2 text-sm hover:text-white hover:bg-[#00b0ff] transition-colors"
+                      key={index}
+                    >
+                      {skill}
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
